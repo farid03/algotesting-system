@@ -1,7 +1,0 @@
-#!/bin/bash
-rm tests/*
-rm a b results.txt
-rm output_*
-touch output_a.txt
-touch output_b.txt
-touch results.txt

@@ -1,3 +1,0 @@
-#!/bin/bash
-clang++ -std=c++1z -o a a.cpp
-clang++ -std=c++1z -o b b.cpp
