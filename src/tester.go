@@ -35,13 +35,13 @@ func run(testCase string, resultChannel chan string) {
 		log.Fatal(bErr)
 	}
 
-	testOutputString := fmt.Sprintf("Case:\n%s\n Result: %s %s", testCase, aOut.String(), bOut.String())
+	testOutputString := fmt.Sprintf("сase:\n%sa: %sb: %s\n", testCase, aOut.String(), bOut.String())
 	// TODO возникают лишние переводы строки для каждого %s
 
-	if aOut.String() == bOut.String() { // TODO подумать над форматом вывода
-		resultChannel <- "correct " + testOutputString
+	if aOut.String() == bOut.String() { // TODO подумать над более удобной реализацией формата вывода
+		resultChannel <- "true " + testOutputString
 	} else {
-		resultChannel <- "incorrect " + testOutputString
+		resultChannel <- "false " + testOutputString
 	}
 }
 
@@ -72,7 +72,7 @@ func main() { // TODO поработать над разбиением на фу
 	secondTestedProgramName = args[2]
 	testCases := dataprocessing.SplitTests(testsSrcFile)
 
-	fmt.Println("The tests are ready to run.")
+	fmt.Println("The tests are ready to run. In total", len(testCases), "cases.")
 
 	var resultChannel = make(chan string)
 
@@ -99,3 +99,7 @@ func main() { // TODO поработать над разбиением на фу
 	close(resultChannel)
 	fmt.Println("The output is in \"result.txt\"")
 }
+
+// TODO обычный режим, подумать над форматом представления данных в результирующем файле
+// TODO добавить режим быстрой прогонки тестов без записи правильных ответов в файл, только неправильные || DEFAULT
+// TODO режим без записи любых результатов, только результат совпадения во всех тестах
