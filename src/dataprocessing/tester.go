@@ -37,7 +37,8 @@ func run(testCase string, resultChannel chan string, firstTestedProgramName stri
 	if aResult != bResult {
 		resultChannel <- "false " + testOutputString
 	} else {
-		resultChannel <- "true " + testOutputString // TODO избавиться от записи в файл успешно пройденных тестов
+		//resultChannel <- "true " + testOutputString // запись успешно пройденных тестов
+		resultChannel <- "_" // для пропуска успешно пройденных тестов
 	}
 }
 
@@ -52,7 +53,10 @@ func StartTests(firstTestedProgramName string, secondTestedProgramName string, t
 	for _, testCase := range testCases {
 		go run(testCase, resultChannel, firstTestedProgramName, secondTestedProgramName)
 		str := <-resultChannel
-		strings.TrimSpace(str)
+		if str == "_" {
+			continue
+		}
+
 		bufStr.WriteString(str)
 		if bufStr.Len() >= fileBufferSize {
 			resultFile.Write(bufStr.Bytes())
