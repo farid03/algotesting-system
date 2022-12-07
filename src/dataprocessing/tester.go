@@ -18,6 +18,7 @@ func run(testCase string, resultChannel chan string, firstTestedProgramName stri
 
 	aErr := cmd.Run()
 	if aErr != nil {
+		log.Printf("RE in program %s in case:\n%s", firstTestedProgramName, testCase)
 		log.Fatal(aErr)
 	}
 
@@ -28,17 +29,19 @@ func run(testCase string, resultChannel chan string, firstTestedProgramName stri
 
 	bErr := cmd.Run()
 	if bErr != nil {
+		log.Printf("RE in program %s in case:\n %s\n", firstTestedProgramName, testCase)
 		log.Fatal(bErr)
 	}
 
-	aResult, bResult := strings.TrimSpace(aOut.String()), strings.TrimSpace(bOut.String())
-	testOutputString := fmt.Sprintf("сase:\n%sa: %s\nb: %s\n\n", testCase, aResult, bResult)
+	firstResult, secondResult := strings.TrimSpace(aOut.String()), strings.TrimSpace(bOut.String())
+	testOutputString := fmt.Sprintf("сase:\n%s%s: %s\n%s: %s\n\n",
+		testCase, firstTestedProgramName, firstResult, secondTestedProgramName, secondResult)
 
-	if aResult != bResult {
+	if firstResult != secondResult {
 		resultChannel <- "false " + testOutputString
 	} else {
-		//resultChannel <- "true " + testOutputString // запись успешно пройденных тестов
-		resultChannel <- "_" // для пропуска успешно пройденных тестов
+		resultChannel <- "true " + testOutputString // запись успешно пройденных тестов
+		//resultChannel <- "_" // для пропуска успешно пройденных тестов
 	}
 }
 
